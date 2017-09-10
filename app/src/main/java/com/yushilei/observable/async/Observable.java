@@ -1,6 +1,7 @@
 package com.yushilei.observable.async;
 
 import com.yushilei.observable.async.observables.IterableOnSubscribe;
+import com.yushilei.observable.async.observables.ObserverOnSchedulerObservable;
 import com.yushilei.observable.async.observables.SubscribeOnSchedulerObservable;
 import com.yushilei.observable.async.scheduler.Scheduler;
 
@@ -22,6 +23,10 @@ public class Observable<T> {
 
     public void subscribe(Subscriber<T> subscriber) {
         onSubscribe.call(subscriber);
+    }
+
+    public Observable<T> observerOn(Scheduler scheduler) {
+        return new ObserverOnSchedulerObservable<>(this, scheduler);
     }
 
     public Observable<T> subscribeOn(Scheduler scheduler) {

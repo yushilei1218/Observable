@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 10; i++) {
             ids.add(i);
         }
-        ids.add(null);
         Observable.from(ids)
                 .subscribeOn(Schedulers.io()).
-                subscribe(new Subscriber<Integer>() {
+                observerOn(Schedulers.mainThread())
+                .subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onNext(Integer integer) {
                         Log.d(TAG, "onNext " + integer.toString() + getThreadName());

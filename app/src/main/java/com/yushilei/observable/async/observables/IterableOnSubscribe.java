@@ -1,7 +1,9 @@
 package com.yushilei.observable.async.observables;
 
 
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.yushilei.observable.async.Observable;
 import com.yushilei.observable.async.Subscriber;
@@ -23,25 +25,13 @@ public class IterableOnSubscribe<T> implements Observable.OnSubscribe<T> {
     public void call(Subscriber<? super T> subscriber) {
         try {
             for (T t : ts) {
-                Event<T> event = new Event<T>(Event.CODE_SUCCESS, t);
-                onResult(event);
+                SystemClock.sleep(2);
+                Log.d("IterableOnSubscribe", " subscribe " + Thread.currentThread().getName());
+                subscriber.onNext(t);
             }
-            Event<T> event = new Event<T>(Event.CODE_COMPLETE);
-            onResult(event);
+            subscriber.onComplete();
         } catch (Throwable trx) {
-            Event<T> event = new Event<T>(Event.CODE_FAIL, trx);
-            onResult(event);
-        }
-    }
-
-    public void onResult(Event<T> event) {
-        switch (event.code) {
-            case Event.CODE_FAIL:
-                break;
-            case Event.CODE_SUCCESS:
-                break;
-            case Event.CODE_COMPLETE:
-                break;
+            subscriber.onError(trx);
         }
     }
 }
