@@ -1,5 +1,6 @@
 package com.yushilei.observable;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import com.yushilei.observable.async.Observable;
 import com.yushilei.observable.async.Observer;
 import com.yushilei.observable.async.Subscriber;
+import com.yushilei.observable.async.scheduler.Scheduler;
 import com.yushilei.observable.async.scheduler.Schedulers;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         Observable.from(ids)
                 .subscribeOn(Schedulers.io()).
                 observerOn(Schedulers.mainThread())
+                .observerOn(Schedulers.mainThread())
                 .subscribe(new Subscriber<Integer>() {
                     @Override
                     public void onNext(Integer integer) {
@@ -51,5 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String getThreadName() {
         return " Thread Name:" + Thread.currentThread().getName();
+    }
+
+    public void jump(View view) {
+        startActivity(new Intent(this, RxJavaActivity.class));
     }
 }
